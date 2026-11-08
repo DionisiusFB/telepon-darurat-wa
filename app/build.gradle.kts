@@ -3,8 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-// Nomor build dari GitHub Actions dipakai sebagai versionCode,
-// supaya APK baru bisa dipasang menimpa yang lama.
+// Nomor build dari GitHub Actions dipakai sebagai nomor versi app.
 val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
 
 android {
