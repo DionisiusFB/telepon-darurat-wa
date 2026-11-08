@@ -11,9 +11,13 @@ import android.widget.Toast
 /**
  * Layar tak terlihat. Dibuka dari notifikasi, panel cepat, atau ikon di layar utama.
  * Tugasnya: tampil di atas layar kunci, membuka kunci (kalau kuncinya hanya geser),
- * lalu menyuruh WhatsApp menelepon.
+ * lalu menyuruh WhatsApp menelepon kontak yang dipilih.
  */
 class CallActivity : Activity() {
+
+    companion object {
+        const val EXTRA_ID = "contact_id"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +33,9 @@ class CallActivity : Activity() {
             )
         }
 
-        val contact = Prefs.load(this)
+        val contact = Prefs.find(this, intent?.getStringExtra(EXTRA_ID))
         if (contact == null) {
-            Toast.makeText(this, "Kontak belum dipilih. Buka app Telepon WA dulu.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Kontak ini sudah dihapus atau belum diatur. Buka app Telepon WA.", Toast.LENGTH_LONG).show()
             startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             finish()
             return
@@ -61,7 +65,7 @@ class CallActivity : Activity() {
     private fun call(contact: WaContact) {
         val result = WhatsApp.startCall(this, contact)
         val message = when (result.status) {
-            WhatsApp.Status.CALL -> "Menelepon ${contact.name} lewat WhatsApp"
+            WhatsApp.Status.CALL -> "Menelepon ${contact.title} lewat WhatsApp"
             WhatsApp.Status.CHAT -> "Panggilan langsung gagal, chat dibuka. Tekan ikon telepon.\n(${result.error})"
             WhatsApp.Status.FAILED -> "WhatsApp tidak bisa dibuka.\n(${result.error})"
         }

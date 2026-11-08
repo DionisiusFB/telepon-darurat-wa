@@ -11,10 +11,10 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
 import android.os.Build
 
-/** Notifikasi permanen berisi tombol telepon, tampil di layar kunci. */
+/** Satu notifikasi permanen per kontak, tampil di layar kunci. */
 object Notif {
     private const val CHANNEL_ID = "tombol_telepon"
-    private const val NOTIF_ID = 1
+    private const val NOTIF_BASE = 1
 
     fun canPost(ctx: Context): Boolean {
         if (Build.VERSION.SDK_INT >= 33 &&
@@ -24,10 +24,20 @@ object Notif {
         return nm.areNotificationsEnabled()
     }
 
-    fun show(ctx: Context) {
-        val contact = Prefs.load(ctx) ?: return
-        if (!canPost(ctx)) return
+    /** Intent untuk menelepon kontak tertentu. Dipakai notifikasi, tombol layar utama, dan panel cepat. */
+    fun callIntent(ctx: Context, contact: WaContact): Intent =
+        Intent(ctx, CallActivity::class.java)
+            .setAction(Intent.ACTION_VIEW)
+            .putExtra(CallActivity.EXTRA_ID, contact.id)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+    fun showAll(ctx: Context) {
         val nm = ctx.getSystemService(NotificationManager::class.java) ?: return
+        val contacts = Prefs.loadAll(ctx)
+
+        // Hapus notifikasi kontak yang sudah tidak ada.
+        for (i in contacts.size until Prefs.MAX) nm.cancel(NOTIF_BASE + i)
+        if (contacts.isEmpty() || !canPost(ctx)) return
 
         val channel = NotificationChannel(
             CHANNEL_ID,
@@ -42,10 +52,16 @@ object Notif {
         }
         nm.createNotificationChannel(channel)
 
-        val callIntent = Intent(ctx, CallActivity::class.java)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        // Kontak pertama diberi waktu paling baru supaya tampil paling atas.
+        val now = System.currentTimeMillis()
+        for (i in contacts.indices.reversed()) {
+            post(ctx, nm, contacts[i], i, now - i * 60_000L)
+        }
+    }
+
+    private fun post(ctx: Context, nm: NotificationManager, contact: WaContact, index: Int, time: Long) {
         val callPi = PendingIntent.getActivity(
-            ctx, 0, callIntent,
+            ctx, 100 + index, callIntent(ctx, contact),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
@@ -57,24 +73,29 @@ object Notif {
 
         val action = Notification.Action.Builder(
             Icon.createWithResource(ctx, R.drawable.ic_call),
-            "TELEPON ${contact.name.uppercase()}",
+            "TELEPON ${contact.title.uppercase()}",
             callPi,
         ).build()
 
-        val notification = Notification.Builder(ctx, CHANNEL_ID)
+        val builder = Notification.Builder(ctx, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_call)
             .setColor(ctx.getColor(R.color.wa_green))
-            .setContentTitle("Telepon ${contact.name}")
+            .setContentTitle(contact.title)
             .setContentText("Ketuk di sini untuk menelepon lewat WhatsApp")
             .setContentIntent(callPi)
             .addAction(action)
             .setDeleteIntent(repostPi)
             .setOngoing(true)
             .setAutoCancel(false)
+            .setWhen(time)
             .setShowWhen(false)
+            .setOnlyAlertOnce(true)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
-            .build()
 
-        nm.notify(NOTIF_ID, notification)
+        // Foto kontak tampil di samping tulisan notifikasi
+        Photos.load(ctx, contact)?.let { builder.setLargeIcon(Icon.createWithBitmap(it)) }
+
+        val notification = builder.build()
+        nm.notify(NOTIF_BASE + index, notification)
     }
 }

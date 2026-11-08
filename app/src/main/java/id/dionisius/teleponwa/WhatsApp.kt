@@ -13,13 +13,21 @@ import android.provider.ContactsContract
  * @param dataId ID baris di tabel kontak Android (bisa berubah kalau WhatsApp sinkron ulang)
  * @param key    isi kolom DATA1, biasanya "628xxx@s.whatsapp.net"; dipakai untuk mencari ulang dataId
  * @param pkg    paket WhatsApp: com.whatsapp atau com.whatsapp.w4b (WA Business)
+ * @param title  nama yang tampil di notifikasi
  */
 data class WaContact(
     val dataId: Long,
     val name: String,
     val key: String,
     val pkg: String,
+    /** Nama yang tampil di notifikasi, misalnya "Pak Kukuh". Bawaannya nama kontak. */
+    val title: String = name,
+    /** ID kontak di buku kontak HP, hanya dipakai saat menyalin foto. Tidak disimpan. */
+    val contactId: Long = -1L,
 ) {
+    /** ID unik kontak ini di dalam app. */
+    val id: String get() = "$pkg|$key"
+
     val digits: String get() = key.substringBefore('@').filter { it.isDigit() }
 
     val label: String
@@ -69,6 +77,7 @@ object WhatsApp {
                         ContactsContract.Data._ID,
                         ContactsContract.Data.DISPLAY_NAME,
                         ContactsContract.Data.DATA1,
+                        ContactsContract.Data.CONTACT_ID,
                     ),
                     "${ContactsContract.Data.MIMETYPE} = ?",
                     arrayOf(voipMime(pkg)),
@@ -77,7 +86,13 @@ object WhatsApp {
                     while (c.moveToNext()) {
                         val key = c.getString(2) ?: continue
                         val name = c.getString(1) ?: key.substringBefore('@')
-                        result += WaContact(c.getLong(0), name, key, pkg)
+                        result += WaContact(
+                            dataId = c.getLong(0),
+                            name = name,
+                            key = key,
+                            pkg = pkg,
+                            contactId = c.getLong(3),
+                        )
                     }
                 }
             } catch (e: Exception) {

@@ -7,6 +7,6 @@ import android.content.Intent
 /** Memunculkan lagi notifikasi setelah HP restart, app di-update, atau notifikasi diusap. */
 class RepostReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
-        Notif.show(context)
+        Notif.showAll(context)
     }
 }

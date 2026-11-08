@@ -41,7 +41,6 @@
             android:name=".CallActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTask"
             android:noHistory="true"
             android:showWhenLocked="true"
             android:taskAffinity=""

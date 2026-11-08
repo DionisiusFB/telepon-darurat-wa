@@ -18,13 +18,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvContact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textSize="18sp" />
-
-        <TextView
             android:id="@+id/tvWarning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,20 +30,28 @@
             android:id="@+id/btnPermission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:text="1. Beri izin kontak, telepon, dan notifikasi" />
 
         <Button
-            android:id="@+id/btnPick"
+            android:id="@+id/btnAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2. Pilih kontak WhatsApp yang ditelepon" />
+            android:text="2. Tambah kontak" />
 
-        <Button
-            android:id="@+id/btnTest"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="3. Tes telepon sekarang" />
+            android:layout_marginTop="16dp"
+            android:text="Kontak (paling atas tampil paling atas di layar kunci)"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/contactList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
 
         <TextView
             android:layout_width="match_parent"
@@ -61,16 +62,10 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnShortcut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tambah tombol di layar utama" />
-
-        <Button
             android:id="@+id/btnTile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tambah tombol di panel cepat" />
+            android:text="Tambah tombol di panel cepat (kontak pertama)" />
 
         <TextView
             android:layout_width="match_parent"
@@ -97,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:lineSpacingExtra="4dp"
-            android:text="Cara pakai: nyalakan layar HP, lalu ketuk notifikasi hijau bertuliskan Telepon. WhatsApp akan langsung menelepon kontak yang dipilih.\n\nSupaya bisa dipakai tanpa membuka kunci, kunci layar HP harus diatur ke Geser atau Tidak ada (tanpa PIN atau pola)."
+            android:text="Cara pakai: nyalakan layar HP, lalu ketuk notifikasi dengan nama orang yang mau ditelepon. WhatsApp akan langsung menelepon.\n\nSupaya bisa dipakai tanpa membuka kunci, kunci layar HP harus diatur ke Geser atau Tidak ada (tanpa PIN atau pola)."
             android:textSize="15sp" />
     </LinearLayout>
 </ScrollView>

@@ -1,6 +1,6 @@
 # Telepon WA
 
-App Android sederhana untuk menelepon satu kontak lewat **WhatsApp** dengan satu ketukan dari **layar kunci**. Dibuat untuk orang yang tidak terbiasa memakai HP, supaya tetap bisa menghubungi keluarga kalau ada apa-apa.
+App Android sederhana untuk menelepon sampai 3 kontak lewat **WhatsApp** dengan satu ketukan dari **layar kunci**. Dibuat untuk orang yang tidak terbiasa memakai HP, supaya tetap bisa menghubungi keluarga kalau ada apa-apa.
 
 ## Unduh APK
 
@@ -11,7 +11,7 @@ APK dibuat otomatis oleh GitHub Actions setiap ada perubahan di branch `main`.
 
 ## Cara kerja singkat
 
-1. App menampilkan **notifikasi permanen** "Telepon (nama)" yang muncul di layar kunci.
+1. App menampilkan **satu notifikasi permanen per kontak** di layar kunci, dengan nama yang bisa diatur sendiri (misalnya "Pak Kukuh") dan foto kontak.
 2. Saat notifikasi diketuk, app membuka layar tak terlihat di atas layar kunci, membuka kunci (kalau kuncinya hanya geser), lalu menyuruh WhatsApp menelepon.
 3. WhatsApp tidak punya API resmi untuk memulai panggilan. App memakai entri "panggilan suara WhatsApp" yang WhatsApp tambahkan ke buku kontak Android (mimetype `vnd.com.whatsapp.voip.call`). Ini cara tidak resmi, jadi bisa berhenti berfungsi kalau WhatsApp mengubah sistemnya.
 4. Kalau panggilan langsung gagal, app membuka chat WhatsApp dengan kontak itu sebagai cadangan.
@@ -33,6 +33,8 @@ Tombol tambahan: ikon di layar utama dan tombol di panel cepat (Quick Settings).
 | `CallActivity.kt` | Tampil di atas layar kunci, buka kunci, mulai panggilan |
 | `WhatsApp.kt` | Cari kontak WA dan mulai panggilan suara |
 | `Notif.kt` | Notifikasi permanen di layar kunci |
+| `Prefs.kt` | Simpan daftar kontak (maksimal 3) |
+| `Photos.kt` | Salin dan perkecil foto kontak |
 | `RepostReceiver.kt` | Munculkan lagi notifikasi setelah restart atau diusap |
 | `CallTileService.kt` | Tombol di panel cepat |
 
