@@ -23,7 +23,7 @@ Tombol tambahan: ikon di layar utama dan tombol di panel cepat (Quick Settings).
 - Android 8.0 atau lebih baru, WhatsApp terpasang dan ada internet.
 - Nomor tujuan tersimpan di Kontak HP dan terbaca oleh WhatsApp.
 - Kunci layar diatur ke **Geser** atau **Tidak ada**. Dengan PIN atau pola, HP akan minta PIN dulu.
-- Izin Kontak dan Notifikasi diberikan.
+- Izin Kontak, Telepon, dan Notifikasi diberikan. Izin Telepon dibutuhkan karena WhatsApp menolak permintaan panggilan dari app tanpa izin ini.
 
 ## Struktur kode
 

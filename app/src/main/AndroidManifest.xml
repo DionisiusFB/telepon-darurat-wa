@@ -3,6 +3,12 @@
 
     <!-- Membaca kontak untuk menemukan entri "panggilan suara WhatsApp" -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- WhatsApp menolak permintaan panggilan dari app yang tidak punya izin Telepon -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- Izin Telepon tidak mewajibkan HP punya kartu SIM -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
     <!-- Menampilkan tombol telepon sebagai notifikasi di layar kunci (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Memunculkan lagi notifikasi setelah HP restart -->

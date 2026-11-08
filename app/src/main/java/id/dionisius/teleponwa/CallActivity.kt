@@ -59,10 +59,11 @@ class CallActivity : Activity() {
     }
 
     private fun call(contact: WaContact) {
-        val message = when (WhatsApp.startCall(this, contact)) {
-            WhatsApp.Result.CALL -> "Menelepon ${contact.name} lewat WhatsApp"
-            WhatsApp.Result.CHAT -> "Panggilan langsung gagal. Chat dibuka, tekan ikon telepon."
-            WhatsApp.Result.FAILED -> "WhatsApp tidak bisa dibuka. Cek WhatsApp sudah terpasang."
+        val result = WhatsApp.startCall(this, contact)
+        val message = when (result.status) {
+            WhatsApp.Status.CALL -> "Menelepon ${contact.name} lewat WhatsApp"
+            WhatsApp.Status.CHAT -> "Panggilan langsung gagal, chat dibuka. Tekan ikon telepon.\n(${result.error})"
+            WhatsApp.Status.FAILED -> "WhatsApp tidak bisa dibuka.\n(${result.error})"
         }
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         finish()

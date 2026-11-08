@@ -52,7 +52,7 @@ class MainActivity : Activity() {
     // ---------- Izin ----------
 
     private fun missingPermissions(): List<String> {
-        val needed = mutableListOf(Manifest.permission.READ_CONTACTS)
+        val needed = mutableListOf(Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE)
         if (Build.VERSION.SDK_INT >= 33) needed += Manifest.permission.POST_NOTIFICATIONS
         return needed.filter { checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED }
     }
@@ -78,7 +78,7 @@ class MainActivity : Activity() {
         if (missingPermissions().isNotEmpty()) {
             AlertDialog.Builder(this)
                 .setTitle("Izin belum lengkap")
-                .setMessage("Kalau jendela izin tidak muncul lagi, buka pengaturan app ini lalu aktifkan izin Kontak dan Notifikasi.")
+                .setMessage("Kalau jendela izin tidak muncul lagi, buka pengaturan app ini lalu aktifkan izin Kontak, Telepon, dan Notifikasi.")
                 .setPositiveButton("Buka pengaturan") { _, _ -> openAppSettings() }
                 .setNegativeButton("Nanti", null)
                 .show()
@@ -239,7 +239,7 @@ class MainActivity : Activity() {
 
         val warnings = mutableListOf<String>()
         if (missingPermissions().isNotEmpty()) {
-            warnings += "Izin kontak atau notifikasi belum diberikan (langkah 1)."
+            warnings += "Izin kontak, telepon, atau notifikasi belum lengkap (langkah 1)."
         } else if (!Notif.canPost(this)) {
             warnings += "Notifikasi app ini dimatikan. Aktifkan lewat tombol pengaturan notifikasi."
         }

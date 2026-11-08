@@ -43,7 +43,13 @@ object WhatsApp {
         if (pkg == PKG_W4B) "vnd.android.cursor.item/vnd.com.whatsapp.w4b.voip.call"
         else "vnd.android.cursor.item/vnd.com.whatsapp.voip.call"
 
-    enum class Result { CALL, CHAT, FAILED }
+    enum class Status { CALL, CHAT, FAILED }
+
+    /** Hasil percobaan menelepon. error berisi pesan error asli kalau panggilan langsung gagal. */
+    data class Result(val status: Status, val error: String? = null)
+
+    private fun describe(e: Exception): String =
+        (e.javaClass.simpleName + ": " + (e.message ?: "")).take(160)
 
     fun isInstalled(ctx: Context, pkg: String): Boolean = try {
         ctx.packageManager.getPackageInfo(pkg, 0)
@@ -99,6 +105,7 @@ object WhatsApp {
      * Kalau gagal, buka chat dengan kontak itu sebagai cadangan (tinggal tekan ikon telepon).
      */
     fun startCall(activity: Activity, saved: WaContact): Result {
+        var error: String? = null
         val id = currentDataId(activity, saved) ?: saved.dataId.takeIf { it > 0 }
         if (id != null) {
             val call = Intent(Intent.ACTION_VIEW)
@@ -109,10 +116,12 @@ object WhatsApp {
                 .setPackage(saved.pkg)
             try {
                 activity.startActivity(call)
-                return Result.CALL
+                return Result(Status.CALL)
             } catch (e: Exception) {
-                // Lanjut ke cadangan
+                error = describe(e)
             }
+        } else {
+            error = "Entri panggilan WhatsApp untuk kontak ini tidak ditemukan"
         }
 
         if (saved.digits.isNotEmpty()) {
@@ -120,11 +129,11 @@ object WhatsApp {
                 .setPackage(saved.pkg)
             try {
                 activity.startActivity(chat)
-                return Result.CHAT
+                return Result(Status.CHAT, error)
             } catch (e: Exception) {
-                // Tidak ada cadangan lagi
+                error = (error?.let { "$it; " } ?: "") + describe(e)
             }
         }
-        return Result.FAILED
+        return Result(Status.FAILED, error)
     }
 }
