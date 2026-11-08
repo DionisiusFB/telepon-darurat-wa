@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pengaturan Telepon WA"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvWarning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/warning_red"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnPermission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="1. Beri izin kontak dan notifikasi" />
+
+        <Button
+            android:id="@+id/btnPick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. Pilih kontak WhatsApp yang ditelepon" />
+
+        <Button
+            android:id="@+id/btnTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. Tes telepon sekarang" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Tombol tambahan (opsional)"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnShortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tambah tombol di layar utama" />
+
+        <Button
+            android:id="@+id/btnTile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tambah tombol di panel cepat" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Pengaturan HP"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnNotifSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buka pengaturan notifikasi app ini" />
+
+        <Button
+            android:id="@+id/btnLockSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buka pengaturan kunci layar" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="4dp"
+            android:text="Cara pakai: nyalakan layar HP, lalu ketuk notifikasi hijau bertuliskan Telepon. WhatsApp akan langsung menelepon kontak yang dipilih.\n\nSupaya bisa dipakai tanpa membuka kunci, kunci layar HP harus diatur ke Geser atau Tidak ada (tanpa PIN atau pola)."
+            android:textSize="15sp" />
+    </LinearLayout>
+</ScrollView>
